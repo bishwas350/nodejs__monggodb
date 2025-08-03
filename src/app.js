@@ -12,5 +12,11 @@ app.use(cors())
 //route
 app.use('/api/v1', require('./routes/api/index.api'))
 
+// global error handler middleware
+app.use((error,req,res,next)=>{
+    console.log(error);
+    
+})
+
 
 module.exports = { app };
