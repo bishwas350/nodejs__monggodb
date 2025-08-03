@@ -1,7 +1,5 @@
 const express = require('express');
 const _ = express.Router()
-_.route('/registration').get((req,res)=>{
-    console.log('hello banchod');
-    
-})
+const userController = require("../../controller/user.controller")
+_.route('/registration').get(userController.Registration)
 module.exports = _
