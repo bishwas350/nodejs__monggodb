@@ -1,0 +1,19 @@
+1xx (Informational):
+100 continue
+101 Switching Proticols
+
+2xx (Success):
+200 OK
+204 No Content
+
+3xx (Redirection):
+301 Moved Permanently
+302 Found
+
+4xx (Client Error):
+404 Not Found
+403 Forbidden
+
+5xx (Server Error):
+500 Internal Server Error
+503 Service Unavailable

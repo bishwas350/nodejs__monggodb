@@ -1,7 +1,8 @@
+const apiResponse = require("../../utils/apiResponse");
 const { asyncHandler } = require("../../utils/asyncHandler");
 
 exports.Registration = asyncHandler((req,res)=>{
-    console.log("hello im backend dev and also devops");
+    apiResponse.sendSusses(res,201, "registration success", { data: "null" });
     
 })
 exports.login = async (req, res )=>{
