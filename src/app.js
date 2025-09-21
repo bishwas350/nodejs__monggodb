@@ -1,6 +1,7 @@
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 const express = require('express');
+const { globalErrorHandler } = require('../utils/globalErrorHandeler');
 const app = express();
 // json  to object
 app.use(express.json())
@@ -13,10 +14,7 @@ app.use(cors())
 app.use('/api/v1', require('./routes/api/index.api'))
 
 // global error handler middleware
-app.use((error,req,res,next)=>{
-    console.log(error);
-    
-})
+app.use(globalErrorHandler)
 
 
 module.exports = { app };
