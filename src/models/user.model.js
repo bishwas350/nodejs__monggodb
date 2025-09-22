@@ -34,7 +34,7 @@ const userSchema = new Schema({
         default : false,
     },
     role :{
-        type:types.ObjectId,
+        type:Types.ObjectId,
         ref : "role",
 
     },
