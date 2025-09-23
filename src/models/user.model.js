@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const {Types, Schema} = mongoose;
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken");
+const coustomError = require("../../utils/coustomError");
 const userSchema = new Schema({
     name : {
         type : String,
@@ -112,4 +114,32 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.comparePassword = async function( humanPass){
 return await bcrypt.compare(humanPass , this.password)
 }
+
+// generate access token
+userSchema.methods.generateAccessToken = async function(){
+  const accesstoken = await jwt.sign({
+  userId : this._id,
+    email : this.email,
+    role : this.role,
+    name : this.name,
+}, process.env.ACCESSTOKEN_SECRET_KEY, { expiresIn: process.env.ACCESSTOKEN_EXPIRE});
+ return accesstoken
+}
+// generate refresh token
+userSchema.methods.generateAccessToken = async function(){
+  return await jwt.sign({
+  userId : this._id,
+}, process.env.REFRESHTOKEN_SECRET_KEY, { expiresIn: process.env.REFRESHTOKEN_EXPIRE});
+ return accesstoken
+}
+
+// verify access token
+userSchema.methods.verifyAccessToken = async function(token){
+     const isValiedRefreshToken = await jwt.verify(token, process.env.REFRESHTOKEN_SECRET_KEY);
+    if(!isValiedRefreshToken){
+        throw new coustomError(401, "Invalid Refresh Token")
+    }
+}
+
+
 module.exports = mongoose.model("User", userSchema);
