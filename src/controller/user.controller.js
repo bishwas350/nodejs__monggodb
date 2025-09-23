@@ -2,11 +2,15 @@ const apiResponse = require("../../utils/apiResponse");
 const { asyncHandler } = require("../../utils/asyncHandler");
 const coustomError = require("../../utils/coustomError");
 const userModel = require("../models/user.model")
-exports.Registration = asyncHandler((req,res)=>{
+const { validateUser } = require("../validation/user.validation");
+exports.Registration = asyncHandler(async (req,res)=>{
     // apiResponse.sendSusses(res,201, "registration success", { data: "null" });
     // throw new coustomError(404, "Email Missisng")
-    const {email, password}= req.body
-    console.log(email, password);
+    const value = await validateUser(req)
+    console.log(value);
+    
+    // const {email, password}= req.body
+    // console.log(email, password);
         
 })
 // exports.login = async (req, res )=>{
