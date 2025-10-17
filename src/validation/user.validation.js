@@ -25,15 +25,15 @@ const userValidationSchema = joi.object(
         "any.required": "password ta dorkar",
       }),
     phoneNumber: joi
-      .string()
-      .empty()
-      .trim()
-      .pattern(/^1[3-9]\d{8}$/, "Bangladesh phone number")
-      .messages({
-        "string.empty": "phone number faka rakhha jabe na",
-        "string.pattern.base": "phone number format ta thik na",
-        "string.name": "invalid phone number",
-      }),
+  .string()
+  .empty()
+  .trim()
+  .pattern(/^01[3-9]\d{8}$/, "Bangladesh phone number")
+  .messages({
+    "string.empty": "phone number faka rakhha jabe na",
+    "string.pattern.base": "phone number format ta thik na",
+  }),
+
   },
   {
     allowUnknown: true,
