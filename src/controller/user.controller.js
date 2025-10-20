@@ -5,19 +5,18 @@ const userModel = require("../models/user.model");
 const { validateUser } = require("../validation/user.validation");
 
 exports.registration = asyncHandler(async (req, res) => {
-   const value = await validateUser(req)
-  if(value.err) throw new coustomError(401, value.err)
-  
+  const value = await validateUser(req);
+  if (value.err) throw new coustomError(401, value.err);
 });
 
 exports.login = asyncHandler(async (req, res) => {
-    apiResponse.sendSusses(res, 200, "login successfull");
-    throw new coustomError(401, "login failed")
+  apiResponse.sendSusses(res, 200, "login successfull");
+  throw new coustomError(401, "login failed");
 });
 
-exports.logout = asyncHandler(async (req, res) =>{
-    apiResponse.sendSusses(res, 200, "logout successfull");
-})
-exports.verification = asyncHandler(async (req, res ) =>{
-    apiResponse.sendSusses(res, 200, "verification successfull");
-})
+exports.logout = asyncHandler(async (req, res) => {
+  apiResponse.sendSusses(res, 200, "logout successfull");
+});
+exports.verification = asyncHandler(async (req, res) => {
+  apiResponse.sendSusses(res, 200, "verification successfull");
+});
