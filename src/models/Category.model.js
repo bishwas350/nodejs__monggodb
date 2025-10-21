@@ -23,7 +23,9 @@ const categorySchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-});
+
+},{  timestamps: true}
+);
 
 // make a slug using name
 categorySchema.pre("save", function (next) {

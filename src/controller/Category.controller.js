@@ -16,3 +16,17 @@ exports.createCategory = asyncHandler(async (req,res)=>{
     if(!category) throw new coustomError(400,"Category create failed")
     apiResponse.sendSusses(res,201,"Category created successfully",category)
 })
+
+exports.getAllCategory = asyncHandler(async(req,res)=>{
+    const category =await CategoryModel.find(). sort({createdAt:-1})
+    if(!category) throw new coustomError(500,"Category not found")
+        apiResponse.sendSusses(res,200,"Category fetch successfully",category)
+})
+
+//find a single category by slug
+exports.singleCategory =asyncHandler(async(req,res)=>{
+    const {slug} = req.params;
+    const category = await CategoryModel.findOne({slug})
+    if(!category) throw new coustomError(404,"Category not found")
+    apiResponse.sendSusses(res,200,"Category fetch successfully",category)
+})
