@@ -21,7 +21,6 @@ const categoryValidationSchema = Joi.object(
     image: Joi.string().trim().uri().messages({
       "string.empty": "Image URL faka rakhha jabe na",
       "string.uri": "Valid image URL hote hobe",
-      
     }),
 
     subCategory: Joi.array()
@@ -56,7 +55,6 @@ const categoryUpdateValidationSchema = Joi.object(
         "string.pattern.base":
           "Category name e only letters, numbers, bangla characters, spaces, hyphen (&) thakte pare",
       }),
-  
   },
   {
     allowUnknown: true,
@@ -89,7 +87,19 @@ const categoryUpdateValidationSchema = Joi.object(
 exports.validateCategory = async (req) => {
   try {
     const value = await categoryValidationSchema.validateAsync(req.body);
-    return value;
+    console.log(req.files);
+    //accept minetype
+    const acceptType = ["image/png", "image/jpg", "image/jpeg", "image/webp"];
+    if (!acceptType.includes(req?.files?.image[0].mimetype)) {
+      throw new coustomError(400, "Invalid image type");
+    }
+    if ((req.files.image[0].size > 10485760)) {
+      throw new coustomError(400, "Image size too large");
+    }
+    if (req.files.image?.length > 1) {
+      throw new coustomError(400, "Only one image allowed");
+    }
+    return {name:value.name, image:req?.files?.image[0]};
   } catch (error) {
     console.log("error from user validation", error);
     throw new coustomError(401, error.message);
