@@ -30,3 +30,10 @@ exports.singleCategory =asyncHandler(async(req,res)=>{
     if(!category) throw new coustomError(404,"Category not found")
     apiResponse.sendSusses(res,200,"Category fetch successfully",category)
 })
+//update category
+const {slug}= req.params
+if(!slug) throw new coustomError(400,"slug missing")
+    // find category
+const category = await CategoryModel.findOne({slug:slug})
+if(!category) throw new coustomError(500 ,  "category not found")
+category.name = req.body?.name || category.name
