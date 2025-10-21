@@ -18,10 +18,10 @@ const categoryValidationSchema = Joi.object(
         "any.required": "Category name ta dorkar",
       }),
 
-    image: Joi.string().trim().required().uri().messages({
+    image: Joi.string().trim().uri().messages({
       "string.empty": "Image URL faka rakhha jabe na",
       "string.uri": "Valid image URL hote hobe",
-      "any.required": "Image URL ta dorkar",
+      
     }),
 
     subCategory: Joi.array()
