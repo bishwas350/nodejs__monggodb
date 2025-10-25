@@ -1,7 +1,7 @@
 const apiResponse = require("../../utils/apiResponse");
 const { asyncHandler } = require("../../utils/asyncHandler");
 const coustomError = require("../../utils/coustomError");
-const { uploadCloudinaryFile } = require("../helpers/Cloudinary");
+const { uploadCloudinaryFile, deleteCloudinaryFile } = require("../helpers/Cloudinary");
 const CategoryModel = require("../models/Category.model");
 
 
@@ -59,6 +59,11 @@ exports.updateCategory = asyncHandler(async (req, res) => {
   }
   
   if (req.files.image) {
+    const parts = category.image.split("/")
+    const imageNmane  = parts [parts.length -1]
+    console.log(imageNmane.split("?")[0])
+    const result =await deleteCloudinaryFile(imageNmane.split("?")[0]);
+    if(result !== "ok") throw new coustomError(400, "Image delete failed");
     const imageurl = await uploadCloudinaryFile(req?.files?.image[0]?.path);
     category.image = imageurl;
   }

@@ -24,3 +24,15 @@ exports.uploadCloudinaryFile =async (filePath)=>{
         throw new coustomError(400,error.message)
     }
 }
+
+//delete file from cloudinary
+exports.deleteCloudinaryFile = async (publicId)=>{
+    try {
+        const result = await cloudinary.uploader.destroy(publicId);
+        console.log(result)
+        return result;
+    } catch (error) {
+        console.log('error from cloudinary delete file',error)
+        throw new coustomError(400,error.message)
+    }
+}
