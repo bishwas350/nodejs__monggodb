@@ -8,5 +8,6 @@ _.route("/create_category").post(
 );
 _.route("/get_all_category").get(categoryController.getAllCategory);
 _.route("/singleCategory/:slug").get(categoryController.singleCategory);
+_.route("/deleteCategory/:slug").delete(categoryController.deleteCategory);
 _.route("/updateCategory/:slug").put(upload.fields([{ name: "image", maxCount: 1 }]),categoryController.updateCategory);
 module.exports = _;

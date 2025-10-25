@@ -30,7 +30,11 @@ exports.deleteCloudinaryFile = async (publicId)=>{
     try {
         const result = await cloudinary.uploader.destroy(publicId);
         console.log(result)
-        return result;
+        if (result.result === 'ok') {
+            return "ok";
+        } else {
+            return "failed";
+        }
     } catch (error) {
         console.log('error from cloudinary delete file',error)
         throw new coustomError(400,error.message)

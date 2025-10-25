@@ -70,3 +70,26 @@ exports.updateCategory = asyncHandler(async (req, res) => {
   await category.save();
   apiResponse.sendSusses(res, 200, "Category updated successfully", category);
 });
+
+
+// delete category
+exports.deleteCategory = asyncHandler(async (req,res)=>{
+  const {slug} = req.params
+
+  //find category
+  const category = await CategoryModel.findOne({
+    slug:slug
+  })
+  if(!category) throw new coustomError(500,"Category not found")
+  console.log(category)
+
+  const parts = category.image.split("/")
+    const imageNmane  = parts [parts.length -1]
+    console.log(imageNmane.split("?")[0])
+    const result =await deleteCloudinaryFile(imageNmane.split("?")[0]);
+    if(result !== "ok") throw new coustomError(400, "Image delete failed");
+  
+  // db
+  const removeCategory =await CategoryModel.findOneAndDelete({slug:slug})
+  apiResponse.sendSusses(res,200,"Category deleted successfully",removeCategory);
+})
