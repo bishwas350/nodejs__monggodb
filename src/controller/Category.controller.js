@@ -31,9 +31,17 @@ exports.singleCategory =asyncHandler(async(req,res)=>{
     apiResponse.sendSusses(res,200,"Category fetch successfully",category)
 })
 //update category
-const {slug}= req.params
+exports.updateCategory = asyncHandler(async(req,res)=>{
+    const {slug}= req.params
 if(!slug) throw new coustomError(400,"slug missing")
     // find category
 const category = await CategoryModel.findOne({slug:slug})
 if(!category) throw new coustomError(500 ,  "category not found")
 category.name = req.body?.name || category.name
+if(req.files.image){
+    const imageurl = await uploadCloudinaryFile (req?.files?.image[0]?.path)
+    category.image = imageurl
+}
+await category.save()
+apiResponse.sendSusses(res,200,"Category updated successfully",category)
+})
