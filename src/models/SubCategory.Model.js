@@ -39,6 +39,20 @@ subCategorySchema.pre("save", function (next) {
   next();
 });
 
+subCategorySchema.pre("findOneAndUpdate", function (next) {
+ const update = this.getUpdate();
+ console.log(update)
+ if (update.name) {
+    update.slug = slugify(update.name, {
+      replacement: "-",
+      lower: true,
+      strict: false,
+      trim: true,
+    });
+    this.setUpdate(update)
+  }
+  next()
+});
 // Check if slug already exists
 subCategorySchema.pre("save", async function (next) {
   const existingSlug = await this.constructor.findOne({ slug: this.slug });
