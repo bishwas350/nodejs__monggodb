@@ -7,7 +7,44 @@ const { validateSubCategory } = require("../validation/SubCategory.Validation");
 // create a subcategory
 exports.createSubCategory = asyncHandler(async (req, res) => {
   const value = await validateSubCategory(req);
-  const subCategory = await subcategoryModel.create(value)
-  if (!subCategory) throw new coustomError(500," subCategory create failed")
-    apiResponse.sendSusses(res,200,"subCategory created successfully",subCategory)
+  const subCategory = await subcategoryModel.create(value);
+  if (!subCategory) throw new coustomError(500, " subCategory create failed");
+  apiResponse.sendSusses(
+    res,
+    200,
+    "subCategory created successfully",
+    subCategory
+  );
+});
+
+// get all subCategory
+exports.getAllSubCategory = asyncHandler(async (req, res) => {
+  const subCategory = await subcategoryModel
+    .find()
+    .populate("category")
+    .sort({ createdAt: -1 });
+  if (!subCategory) throw new coustomError(500, " subCategory retrive failed");
+  apiResponse.sendSusses(
+    res,
+    200,
+    "subCategory retrive successfully",
+    subCategory
+  );
+});
+
+// find single subCategory by slug
+exports.getSingleSubCategory = asyncHandler(async (req, res) => {
+  const { slug } = req.params;
+  if(!slug) throw new coustomError(400, "slug missing");
+  const subCategory = await subcategoryModel
+    .find({ slug: slug})
+    .populate("category")
+    .sort({ createdAt: -1 });
+  if (!subCategory) throw new coustomError(500, " subCategory retrive failed");
+  apiResponse.sendSusses(
+    res,
+    200,
+    "subCategory retrive successfully",
+    subCategory
+  );
 });
