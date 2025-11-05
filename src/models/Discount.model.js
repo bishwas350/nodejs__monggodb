@@ -6,52 +6,44 @@ const discountSchema = new mongoose.Schema(
   {
     discountName: {
       type: String,
-      required: [true, "Discount name ta dorkar"],
+      required: true,
       trim: true,
-      minlength: [2, "Discount name at least 2 character hote hobe"],
-      maxlength: [100, "Discount name maximum 100 character hote pare"],
     },
 
     slug: {
       type: String,
-      unique: true,
-      lowercase: true,
-      trim: true,
     },
 
     discountValidFrom: {
       type: Date,
-      required: [true, "Discount start date dorkar"],
+      required: true,
     },
 
     discountValidTo: {
       type: Date,
-      required: [true, "Discount end date dorkar"],
+      required: true,
     },
 
     discountValueByAmount: {
       type: Number,
       default: 0,
-      min: [0, "Discount amount negative hote parbe na"],
     },
 
     discountValueByPercentance: {
       type: Number,
       default: 0,
-      min: [0, "Discount percent negative hote parbe na"],
-      max: [100, "Discount percent 100 er beshi hote parbe na"],
     },
 
     discountType: {
       type: String,
       enum: ["tk", "percentance"],
-      required: [true, "Discount type dorkar (tk/percentance)"],
+      required: true,
     },
 
     discountPlan: {
       type: String,
       enum: ["flat", "category", "product"],
-      required: [true, "Discount plan dorkar (flat/category/product)"],
+      required: true,
     },
 
     targetProduct: {
@@ -85,12 +77,18 @@ const discountSchema = new mongoose.Schema(
 //
 discountSchema.pre("save", async function (next) {
   if (this.isModified("discountName")) {
-    this.slug = slugify(this.discountName, { lower: true, strict: true });
+    this.slug = slugify(this.discountName, {
+       lower: true,
+        strict: false,
+      lower:true,
+      trim:true,
+      replacement:'-',
+    });
   }
 
   // ✅ Step 2: Check unique slug
-  const existing = await this.constructor.findOne({ slug: this.slug });
-  if (existing && existing._id.toString() !== this._id.toString()) {
+  const slug = await this.constructor.findOne({ slug: this.slug });
+  if (slug && slug._id.toString() !== this._id.toString()) {
     throw new coustomError(400, "Discount name already exists");
   }
 
@@ -100,13 +98,19 @@ discountSchema.pre("save", async function (next) {
 //
 // ✅ Step 3: Validation for date
 //
-discountSchema.pre("validate", function (next) {
-  if (this.discountValidFrom && this.discountValidTo) {
-    if (this.discountValidTo < this.discountValidFrom) {
-      return next(new coustomError(400, "Discount end date must be after start date"));
-    }
+discountSchema.pre("findOneAndUpdate", function (next) {
+ const update = this.getUpdate();
+ console.log(update)
+ if (update.name) {
+    update.slug = slugify(update.name, {
+      replacement: "-",
+      lower: true,
+      strict: false,
+      trim: true,
+    });
+    this.setUpdate(update)
   }
-  next();
+  next()
 });
 
 module.exports = mongoose.model("Discount", discountSchema);
