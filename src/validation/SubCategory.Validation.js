@@ -83,7 +83,9 @@ exports.validateSubCategory = async (req) => {
 // ✅ Update validator function (for update)
 exports.validateSubCategoryUpdate = async (req) => {
   try {
-    const value = await subCategoryUpdateValidationSchema.validateAsync(req.body);
+    const value = await subCategoryUpdateValidationSchema.validateAsync(
+      req.body
+    );
     return value;
   } catch (error) {
     console.log("Error from SubCategory update validation", error);
