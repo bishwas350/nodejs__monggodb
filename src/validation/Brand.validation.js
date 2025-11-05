@@ -26,7 +26,7 @@ exports.validateBrand = async (req) => {
     if (!req?.files?.image || req.files.image.length === 0) {
       throw new coustomError(400, "Brand image is required");
     }
-    if (!acceptType.includes(req.files.image[0].minetype)) {
+    if (!acceptType.includes(req.files.image[0].mimetype)) {
       throw new coustomError(400, "Invalid image type for Brand");
     }
     if (req.files.image[0].size > 10485760) {

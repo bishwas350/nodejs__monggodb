@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { default: slugify } = require("slugify");
 
 const brandSchema = new mongoose.Schema(
   {
@@ -11,8 +12,6 @@ const brandSchema = new mongoose.Schema(
       type: String,
     },
     image: {
-      type: String,
-      required: true,
     },
     since: {
       type: Number,
@@ -33,7 +32,6 @@ brandSchema.pre("save", function (next) {
       replacement: "-",
       lower: true,
       strict: false,
-      locale: "bn",
       trim: true,
     });
   }
