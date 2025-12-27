@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const { customError } = require('../../utils/customError');
+const coustomError = require('../../utils/coustomError');
+
 
 // Helper: check valid ObjectId
 const isValidObjectId = (value, helpers) => {
@@ -74,7 +75,7 @@ exports.validateDiscount = async req => {
     return value;
   } catch (error) {
     console.log('Error from validate Discount method:', error);
-    throw new customError(
+    throw new coustomError(
       401,
       error.details ? error.details[0].message : error.message
     );

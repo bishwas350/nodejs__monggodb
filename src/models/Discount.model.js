@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const coustomError = require("../utils/coustomError");
+const coustomError = require("../../utils/coustomError");
 const slugify = require("slugify");
 
 const discountSchema = new mongoose.Schema(
@@ -42,7 +42,7 @@ const discountSchema = new mongoose.Schema(
 
     discountPlan: {
       type: String,
-      enum: ["flat", "category", "product"],
+      enum: ["flat", "category", "product", "subcategory"],
       required: true,
     },
 
